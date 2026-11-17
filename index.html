@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D&D Emotional Class Finder — 18-Question Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0b0d13;
+      --bg-card: #131722;
+      --bg-elevated: #1a2030;
+      --bg-hover: #21283b;
+      --gold: #e5b54f;
+      --gold-dim: rgba(229, 181, 79, 0.16);
+      --gold-border: rgba(229, 181, 79, 0.35);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-soft: #cbd5e1;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top center, #181e2e 0%, var(--bg-deep) 68%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 16px 48px;
+      line-height: 1.5;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .badge-top {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .subtitle-top {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 4vw, 32px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pillar-tag {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .step-counter {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #c98a2c, var(--gold));
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .dots-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dot.answered {
+      background: rgba(229, 181, 79, 0.45);
+      border-color: var(--gold);
+    }
+
+    .dot.active {
+      background: var(--gold);
+      border-color: #fff;
+      transform: scale(1.2);
+    }
+
+    .question-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .question-hint {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 15px 18px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.96rem;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.18s ease;
+    }
+
+    .option-btn:hover {
+      background: var(--bg-hover);
+      border-color: rgba(229, 181, 79, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .option-btn.selected {
+      background: rgba(229, 181, 79, 0.14);
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
+    .option-radio {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s ease;
+    }
+
+    .option-btn.selected .option-radio {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+
+    .option-btn.selected .option-radio::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0b0d13;
+    }
+
+    .nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 18px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 11px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.18s ease;
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-soft);
+      border-color: var(--border-subtle);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #e5b54f, #c88d28);
+      color: #0b0d13;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .result-hero {
+      text-align: center;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 22px;
+    }
+
+    .result-kicker {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .result-class {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .result-tagline {
+      font-size: 1.05rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .result-section {
+      margin-bottom: 22px;
+    }
+
+    .result-section h3 {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 1.05rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+      letter-spacing: 0.03em;
+    }
+
+    .result-body {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .subclass-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 22px;
+    }
+
+    .subclass-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .runners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .runner-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+    }
+
+    .runner-rank {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .runner-name {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 2px 0 4px;
+    }
+
+    .runner-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .bar-row {
+      margin-bottom: 12px;
+    }
+
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #b87b22, var(--gold));
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 26px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .copy-toast {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--gold);
+      margin-top: 10px;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="badge-top">13 Official Classes &bull; Including Artificer</div>
+      <h1>D&amp;D Emotional Class Finder</h1>
+      <p class="subtitle-top">18 questions across 6 emotional pillars to match your headspace to your ideal hero.</p>
+    </header>
+
+    <!-- Quiz View -->
+    <main id="quiz-view" class="card">
+      <div class="progress-header">
+        <span id="pillar-label" class="pillar-tag">Pillar 1: Emotional Weather</span>
+        <span id="step-label" class="step-counter">Question 1 of 18</span>
+      </div>
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill" style="width: 5.55%;"></div>
+      </div>
+      <div id="dots-row" class="dots-row" aria-label="Question navigation"></div>
+
+      <h2 id="question-title" class="question-title">Loading question...</h2>
+      <p id="question-hint" class="question-hint">Choose the option that resonates most honestly right now.</p>
+
+      <div id="options-list" class="options-list"></div>
+
+      <div class="nav-footer">
+        <button id="prev-btn" class="btn btn-secondary" type="button">Previous</button>
+        <button id="next-btn" class="btn btn-primary" type="button" disabled>Next Question</button>
+      </div>
+    </main>
+
+    <!-- Results View -->
+    <section id="results-view" class="card hidden">
+      <div class="result-hero">
+        <div class="result-kicker">Your Emotional Class Resonance</div>
+        <h2 id="res-class" class="result-class">Artificer</h2>
+        <p id="res-tagline" class="result-tagline">The Arcane Tinkerer &amp; Calm Problem-Solver</p>
+      </div>
+
+      <div class="result-section">
+        <h3>Why This Class Fits Your Current Headspace</h3>
+        <p id="res-core" class="result-body"></p>
+      </div>
+
+      <div class="subclass-box">
+        <div class="result-kicker" style="margin-bottom: 4px;">Tailored Subclass Match</div>
+        <div id="res-subclass-name" class="subclass-title"></div>
+        <p id="res-subclass-desc" class="result-body" style="font-size: 0.9rem;"></p>
+      </div>
+
+      <div class="result-section">
+        <h3>At the Table</h3>
+        <p id="res-playstyle" class="result-body"></p>
+      </div>
+
+      <div class="result-section">
+        <h3>Close Runners-Up</h3>
+        <div id="runners-grid" class="runners-grid"></div>
+      </div>
+
+      <div class="result-section">
+        <h3>Top 5 Class Resonance Breakdown</h3>
+        <div id="bars-container"></div>
+      </div>
+
+      <div class="result-actions">
+        <button id="copy-btn" class="btn btn-primary" type="button">Copy My Result</button>
+        <button id="retake-btn" class="btn btn-secondary" type="button">Retake Quiz</button>
+      </div>
+      <div id="copy-toast" class="copy-toast"></div>
+    </section>
+  </div>
+
+  <script>
+    const CLASSES = {
+      Artificer: {
+        name: "Artificer",
+        tagline: "The Inventive Architect Who Turns Chaos Into Craft",
+        emotionalCore: "Right now, your mind craves agency, tangible progress, and clever solutions. Instead of letting stress spiral, you feel best when you can step back, inspect the moving parts of a problem, and build a custom workaround with your own hands.",
+        playstyle: "You shine as a resourceful support-and-utility specialist—infusing allies' gear, deploying arcane gadgets, and always having the exact tool or spell needed to turn an impossible obstacle into a solved puzzle.",
+        subclasses: {
+          craft: { name: "Armorer Artificer", desc: "You retreat into focused craft to build a self-contained suit of arcane armor—creating both physical protection and an emotional sanctuary." },
+          analysis: { name: "Artillerist Artificer", desc: "You channel analytical precision into deployable eldritch cannons, controlling battlefield positioning with calm tactical foresight." },
+          care: { name: "Alchemist Artificer", desc: "You express care through preparation—brewing experimental elixirs that patch up allies and turn quiet tinkering into lifeline support." },
+          default: { name: "Battle Smith Artificer", desc: "You pair hands-on ingenuity with a loyal Steel Defender companion—ideal when you want self-reliance backed by steady protection." }
+        }
+      },
+      Barbarian: {
+        name: "Barbarian",
+        tagline: "The Unfiltered Storm Who Metabolizes Tension Into Power",
+        emotionalCore: "You are carrying real kinetic heat, frustration, or protective fire that refuses to be bottled up politely. You need permission to drop the mask, trust your gut, and burn through resistance head-on.",
+        playstyle: "You are an unstoppable frontline force—soaking up punishment that would drop anyone else and turning raw emotional intensity into decisive momentum.",
+        subclasses: {
+          kinetic: { name: "Path of the Totem Warrior (Bear)", desc: "You channel primal endurance and fierce loyalty, standing unmoved so the people behind you stay safe." },
+          freedom: { name: "Path of Wild Magic", desc: "Your big feelings spill over into unpredictable bursts of arcane energy—celebrating spontaneity over rigid control." },
+          default: { name: "Path of the Berserker", desc: "Pure, unapologetic catharsis—letting you unleash every ounce of pent-up tension in a single fearless charge." }
+        }
+      },
+      Bard: {
+        name: "Bard",
+        tagline: "The Expressive Alchemist of Mood, Story & Connection",
+        emotionalCore: "Your emotional world runs vivid and expressive. You process life by naming it, sharing it, or transforming heavy moments into humor, music, and connection that lifts the whole room.",
+        playstyle: "You are the ultimate social and tactical catalyst—inspiring allies with a well-timed word, improvising out of tight corners, and reshaping the momentum of every scene.",
+        subclasses: {
+          social: { name: "College of Eloquence", desc: "Your words carry effortless warmth and persuasion, turning tense standoffs into breakthroughs." },
+          craft: { name: "College of Lore", desc: "Curiosity drives your creativity—collecting hidden secrets and borrowing spells from across the multiverse to stay adaptable." },
+          default: { name: "College of Glamour", desc: "You lean into theatrical presence and emotional magnetism, rallying your party whenever morale dips." }
+        }
+      },
+      Cleric: {
+        name: "Cleric",
+        tagline: "The Steady Anchor Who Holds the Line for Others",
+        emotionalCore: "Your heart is tuned to the people around you. Even when tired, you find deep meaning in being reliable, restoring what is broken, and grounding your circle when everything feels uncertain.",
+        playstyle: "You are the backbone of any party—blending protective magic, timely healing, and resolute presence so your allies never feel alone.",
+        subclasses: {
+          care: { name: "Life Domain Cleric", desc: "Pure restorative strength—maximizing every healing spell to keep your companions standing through the worst storms." },
+          analysis: { name: "Knowledge Domain Cleric", desc: "You seek clarity and understanding as a form of devotion, uncovering hidden truths to guide your group safely." },
+          default: { name: "Twilight Domain Cleric", desc: "You offer a calm, protective sanctuary in the dark—soothing anxiety and shielding allies from overwhelm." }
+        }
+      },
+      Druid: {
+        name: "Druid",
+        tagline: "The Quiet Observer Rooted in Natural Rhythms",
+        emotionalCore: "Noise, artificial urgency, and social expectations feel exhausting right now. You restore yourself by stepping back into stillness, nature, and organic cycles where you don't have to perform.",
+        playstyle: "You are infinitely adaptable—reshaping the terrain, summoning natural allies, or slipping into Wild Shape to see the world from a completely fresh perspective.",
+        subclasses: {
+          solitude: { name: "Circle of the Land", desc: "Deeply attuned to quiet landscapes, drawing steady, meditative magic from solitude and the earth itself." },
+          freedom: { name: "Circle of the Moon", desc: "You shed human expectations by shifting into powerful wild forms, embracing pure instinct and physical freedom." },
+          default: { name: "Circle of Stars", desc: "You look upward for perspective, charting calm constellations that guide, heal, and illuminate the dark." }
+        }
+      },
+      Fighter: {
+        name: "Fighter",
+        tagline: "The Disciplined Craftsperson of Grit & Composure",
+        emotionalCore: "You value reliability, earned competence, and keeping your head when others panic. You don't need flashy shortcuts—you trust preparation, muscle memory, and showing up.",
+        playstyle: "Consistent, versatile, and rock-solid—you control the tempo of combat through sharp positioning, extra attacks, and clutch Action Surges.",
+        subclasses: {
+          analysis: { name: "Battle Master Fighter", desc: "You treat every clash like a chess match, using tactical maneuvers to disarm, trip, and outthink stronger foes." },
+          stillness: { name: "Samurai Fighter", desc: "You draw on unshakable inner composure and willpower to push past exhaustion when stakes peak." },
+          default: { name: "Champion Fighter", desc: "Clean, focused execution—honing fundamentals to perfection without unnecessary clutter." }
+        }
+      },
+      Monk: {
+        name: "Monk",
+        tagline: "The Kinetic Meditator Turning Tension Into Stillness",
+        emotionalCore: "You hold a rare pairing of restless physical energy and a deep desire for inner calm. Moving with intention, breath, and self-mastery lets you burn off stress while keeping your mind crystal clear.",
+        playstyle: "Fast, elusive, and self-reliant—you dart across danger, deflect incoming attacks, and dismantle enemy plans with precision strikes.",
+        subclasses: {
+          analysis: { name: "Way of the Cobalt Soul", desc: "You channel focused motion into analytical insight—reading an opponent's weaknesses mid-exchange." },
+          stillness: { name: "Way of the Open Hand", desc: "Pure somatic flow—redirecting momentum effortlessly without losing your center." },
+          default: { name: "Way of the Astral Self", desc: "You project your inner clarity outward, turning quiet self-knowledge into tangible strength." }
+        }
+      },
+      Paladin: {
+        name: "Paladin",
+        tagline: "The Unbreakable Shield Guided by Conviction",
+        emotionalCore: "You feel a strong pull toward integrity, loyalty, and standing up for what matters. Even when the world feels cynical, keeping your word gives you real strength.",
+        playstyle: "You radiate protective auras that steady nearby allies while delivering decisive, high-impact strikes when a threat crosses the line.",
+        subclasses: {
+          duty: { name: "Oath of Devotion", desc: "Classic, steadfast honor—becoming a beacon of honesty and protection for everyone around you." },
+          care: { name: "Oath of the Ancients", desc: "You protect joy, warmth, and hope itself—sheltering the light in people who feel worn down." },
+          default: { name: "Oath of Vengeance", desc: "Focused, relentless determination directed squarely at righting a clear wrong." }
+        }
+      },
+      Ranger: {
+        name: "Ranger",
+        tagline: "The Watchful Pathfinder Who Thrives on the Edges",
+        emotionalCore: "You feel most comfortable when you have breathing room, clear sightlines, and autonomy. You notice subtle shifts in your environment early and prefer navigating tricky terrain on your own terms.",
+        playstyle: "Sharp-eyed and self-sufficient—you scout ahead, control space from range, and adapt seamlessly between stealth, survival, and precision strikes.",
+        subclasses: {
+          solitude: { name: "Gloom Stalker Ranger", desc: "You thrive in quiet shadows and solitude, moving unseen and striking decisively before danger even registers." },
+          care: { name: "Beast Master Ranger", desc: "You prefer the honest bond of one deeply trusted companion over noisy crowds." },
+          default: { name: "Horizon Walker Ranger", desc: "Restless and perceptive, always sensing portals, shifts, and new paths beyond the obvious." }
+        }
+      },
+      Rogue: {
+        name: "Rogue",
+        tagline: "The Sharp-Witted Survivor Who Finds Every Loophole",
+        emotionalCore: "Right now, you value autonomy, situational awareness, and never letting yourself get boxed in. You read rooms quickly, keep an exit strategy handy, and outsmart brute force with timing.",
+        playstyle: "Agile, clever, and deadly precise—you excel at skills, stealth, and landing a single devastating Sneak Attack right where it counts.",
+        subclasses: {
+          analysis: { name: "Inquisitive Rogue", desc: "Nothing gets past your eye—you spot hidden motives, traps, and weak points with effortless calm." },
+          social: { name: "Swashbuckler Rogue", desc: "Quick on your feet and sharper with a quip, dancing through chaos with effortless confidence." },
+          default: { name: "Phantom Rogue", desc: "Introspective and perceptive, drawing quiet wisdom from the edges between worlds." }
+        }
+      },
+      Sorcerer: {
+        name: "Sorcerer",
+        tagline: "The Intuitive Spark Channeling Raw Authenticity",
+        emotionalCore: "Your feelings aren't small—and trying to squeeze yourself into someone else's rigid mold only drains you. When you trust your intuition and let your real voice out, your energy becomes magnetic.",
+        playstyle: "High-impact and expressive—you bend the rules of magic itself with Metamagic, reshaping spells on instinct to fit the exact emotional beat.",
+        subclasses: {
+          freedom: { name: "Wild Magic Sorcerer", desc: "You embrace unpredictability and emotional honesty, turning surges of feeling into thrilling magic." },
+          stillness: { name: "Clockwork Soul Sorcerer", desc: "You channel innate power to restore balance and calm whenever chaos threatens to spill over." },
+          default: { name: "Draconic Bloodline Sorcerer", desc: "Bold, resilient, and unapologetic—stepping fully into your own innate strength." }
+        }
+      },
+      Warlock: {
+        name: "Warlock",
+        tagline: "The Pragmatic Seeker Who Guards Their Boundaries",
+        emotionalCore: "You are selective with your energy, allergic to fake pleasantries, and willing to take unconventional paths to claim leverage and autonomy on your own terms.",
+        playstyle: "Focused, mysterious, and customizable—you rely on potent short-rest magic, Eldritch Invocations, and sharp utility that recharges fast.",
+        subclasses: {
+          solitude: { name: "The Great Old One Warlock", desc: "Quiet, observant, and deeply introspective—exploring hidden truths far beyond everyday small talk." },
+          duty: { name: "The Hexblade Warlock", desc: "You forge a sharp, focused pact that turns personal resolve into decisive action." },
+          default: { name: "The Archfey Warlock", desc: "Elusive, clever, and fiercely protective of your freedom—slipping away whenever someone tries to cage you." }
+        }
+      },
+      Wizard: {
+        name: "Wizard",
+        tagline: "The Deep Thinker Who Finds Safety in Understanding",
+        emotionalCore: "Uncertainty feels much less intimidating once you understand the underlying rules. Right now, your mind wants clarity, structure, and the quiet satisfaction of mastering complex systems.",
+        playstyle: "The ultimate prepared strategist—carrying a spellbook full of tailored answers for every conceivable problem.",
+        subclasses: {
+          analysis: { name: "School of Divination Wizard", desc: "You love seeing patterns ahead of time—literally reshaping fate with Portent rolls so nothing blindsides you." },
+          care: { name: "School of Abjuration Wizard", desc: "You turn knowledge into a protective ward, shielding both yourself and your allies from harm." },
+          default: { name: "Order of Scribes Wizard", desc: "Deeply absorbed in ideas and living books, finding comfort and creative flow in pure study." }
+        }
+      }
+    };
+
+    const QUESTIONS = [
+      // Pillar 1: Emotional Weather (Q1-Q3)
+      {
+        pillar: "Pillar 1: Emotional Weather",
+        title: "What is your dominant emotional weather right now?",
+        options: [
+          { label: "Restless, fired up, or ready to burn off tension", tag: "kinetic", weights: { Barbarian: 3, Monk: 2, Fighter: 2, Sorcerer: 1 } },
+          { label: "Curious, analytical, or craving a project to fix", tag: "craft", weights: { Artificer: 3, Wizard: 3, Rogue: 1 } },
+          { label: "Grounded, steady, and fiercely protective of my people", tag: "duty", weights: { Paladin: 3, Cleric: 2, Fighter: 2, Druid: 1 } },
+          { label: "Reflective, quiet, or searching for deeper meaning", tag: "solitude", weights: { Druid: 3, Monk: 2, Cleric: 2, Warlock: 1 } },
+          { label: "Playful, theatrical, or riding waves of big feelings", tag: "social", weights: { Bard: 3, Sorcerer: 3, Warlock: 1 } }
+        ]
+      },
+      {
+        pillar: "Pillar 1: Emotional Weather",
+        title: "When frustration lingers in the background, where does it go?",
+        options: [
+          { label: "Into my body—I feel coiled and ready to move", tag: "kinetic", weights: { Monk: 3, Barbarian: 3, Fighter: 2 } },
+          { label: "Into my head—I obsess over how to fix or redesign the problem", tag: "craft", weights: { Artificer: 3, Wizard: 3, Rogue: 1 } },
+          { label: "Into quiet withdrawal—I pull back to observe and protect myself", tag: "solitude", weights: { Rogue: 3, Ranger: 3, Warlock: 2 } },
+          { label: "Into caring—I worry about how everyone else is holding up", tag: "care", weights: { Cleric: 3, Paladin: 2, Bard: 2, Druid: 1 } },
+          { label: "Into intensity—I feel a surge of stubborn determination", tag: "freedom", weights: { Warlock: 3, Sorcerer: 3, Paladin: 1 } }
+        ]
+      },
+      {
+        pillar: "Pillar 1: Emotional Weather",
+        title: "What kind of day leaves you feeling most alive?",
+        options: [
+          { label: "Building, repairing, or perfecting something tangible", tag: "craft", weights: { Artificer: 4, Wizard: 1, Fighter: 1 } },
+          { label: "Mastering a tough physical or mental skill through pure discipline", tag: "stillness", weights: { Monk: 3, Fighter: 3, Ranger: 2 } },
+          { label: "Connecting deeply with people, music, or shared stories", tag: "social", weights: { Bard: 3, Cleric: 2, Paladin: 2 } },
+          { label: "Wandering somewhere wild, quiet, and untamed", tag: "solitude", weights: { Druid: 3, Ranger: 3, Barbarian: 1 } },
+          { label: "Breaking free of expectations and doing things my own way", tag: "freedom", weights: { Sorcerer: 3, Rogue: 3, Warlock: 2 } }
+        ]
+      },
+
+      // Pillar 2: Crisis & Conflict (Q4-Q6)
+      {
+        pillar: "Pillar 2: Crisis & Conflict",
+        title: "When life throws a sudden crisis at you, what is your gut instinct?",
+        options: [
+          { label: "Charge straight at it and take the hit head-on", tag: "kinetic", weights: { Barbarian: 3, Fighter: 3, Paladin: 2 } },
+          { label: "Step back, analyze the mechanics, and build a clever workaround", tag: "analysis", weights: { Artificer: 3, Wizard: 2, Monk: 2, Rogue: 1 } },
+          { label: "Stay flexible, improvise, and slip through the cracks", tag: "freedom", weights: { Rogue: 3, Bard: 2, Ranger: 2 } },
+          { label: "Check on everyone else first and rally the group", tag: "care", weights: { Cleric: 3, Paladin: 2, Druid: 2 } },
+          { label: "Channel raw emotion or sheer willpower to force a breakthrough", tag: "freedom", weights: { Sorcerer: 3, Warlock: 3, Barbarian: 1 } }
+        ]
+      },
+      {
+        pillar: "Pillar 2: Crisis & Conflict",
+        title: "How do you react when confronted with an unfair rule or rigid authority?",
+        options: [
+          { label: "Outsmart it quietly and use its own loopholes against it", tag: "analysis", weights: { Rogue: 3, Artificer: 2, Wizard: 2, Warlock: 1 } },
+          { label: "Stand my ground openly and refuse to compromise my principles", tag: "duty", weights: { Paladin: 3, Barbarian: 2, Fighter: 2 } },
+          { label: "Smile, charm, or talk my way around the obstacle", tag: "social", weights: { Bard: 3, Sorcerer: 2, Rogue: 1 } },
+          { label: "Detach emotionally—their rules don't touch my inner peace", tag: "stillness", weights: { Monk: 3, Druid: 3, Ranger: 1 } },
+          { label: "Make a calculated pact or pragmatic trade to get leverage", tag: "analysis", weights: { Warlock: 3, Wizard: 2, Artificer: 1 } }
+        ]
+      },
+      {
+        pillar: "Pillar 2: Crisis & Conflict",
+        title: "When stakes are highest, what do you trust most?",
+        options: [
+          { label: "My preparation, tools, and contingency plans", tag: "craft", weights: { Artificer: 3, Wizard: 3, Ranger: 2 } },
+          { label: "My reflexes, conditioning, and muscle memory", tag: "kinetic", weights: { Fighter: 3, Monk: 3, Rogue: 2 } },
+          { label: "My gut instincts and raw intuition", tag: "freedom", weights: { Sorcerer: 3, Barbarian: 3, Druid: 2 } },
+          { label: "My conviction and sense of duty", tag: "duty", weights: { Paladin: 3, Cleric: 3 } },
+          { label: "My ability to read people and improvise", tag: "social", weights: { Bard: 3, Rogue: 2, Warlock: 2 } }
+        ]
+      },
+
+      // Pillar 3: Social Battery & Trust (Q7-Q9)
+      {
+        pillar: "Pillar 3: Social Battery & Trust",
+        title: "How does your social battery feel lately?",
+        options: [
+          { label: "Energized by connection—I want to inspire, perform, or lead", tag: "social", weights: { Bard: 3, Paladin: 3, Cleric: 1 } },
+          { label: "Selective—I thrive with one or two deeply trusted allies", tag: "solitude", weights: { Warlock: 3, Rogue: 2, Fighter: 2, Artificer: 1 } },
+          { label: "Drained—I need solitude, nature, or quiet focus to recharge", tag: "solitude", weights: { Druid: 3, Monk: 3, Ranger: 2, Artificer: 2 } },
+          { label: "Detached—I prefer watching from the edges and reading the room", tag: "analysis", weights: { Rogue: 3, Wizard: 2, Ranger: 2 } },
+          { label: "Steady—I show up reliably for my team without needing the spotlight", tag: "care", weights: { Fighter: 3, Cleric: 3, Paladin: 1 } }
+        ]
+      },
+      {
+        pillar: "Pillar 3: Social Battery & Trust",
+        title: "What role do you naturally end up playing in a group?",
+        options: [
+          { label: "The quiet problem-solver who fixes what's broken", tag: "craft", weights: { Artificer: 3, Wizard: 2, Ranger: 2 } },
+          { label: "The anchor who keeps everyone safe, healed, or steady", tag: "care", weights: { Cleric: 3, Paladin: 3, Druid: 2 } },
+          { label: "The spark who lifts morale, cracks jokes, or reads the vibe", tag: "social", weights: { Bard: 3, Sorcerer: 2, Monk: 1 } },
+          { label: "The scout who notices danger early and keeps exits open", tag: "analysis", weights: { Rogue: 3, Ranger: 3, Monk: 2 } },
+          { label: "The vanguard who steps forward so others don't have to", tag: "duty", weights: { Fighter: 3, Barbarian: 3, Paladin: 2 } }
+        ]
+      },
+      {
+        pillar: "Pillar 3: Social Battery & Trust",
+        title: "What drains your trust fastest in other people?",
+        options: [
+          { label: "Carelessness, sloppiness, or ignoring obvious facts", tag: "analysis", weights: { Wizard: 3, Artificer: 3, Monk: 1 } },
+          { label: "Betrayal of loyalty or abandoning people when things get hard", tag: "duty", weights: { Paladin: 3, Fighter: 3, Cleric: 2, Barbarian: 1 } },
+          { label: "Being controlled, micromanaged, or boxed in", tag: "freedom", weights: { Barbarian: 3, Sorcerer: 3, Rogue: 2, Druid: 1 } },
+          { label: "Fake behavior, manipulation, or hidden agendas", tag: "solitude", weights: { Ranger: 3, Druid: 2, Monk: 2 } },
+          { label: "Being dismissed, underestimated, or silenced", tag: "social", weights: { Warlock: 3, Bard: 3, Sorcerer: 1 } }
+        ]
+      },
+
+      // Pillar 4: Power, Craft & Control (Q10-Q12)
+      {
+        pillar: "Pillar 4: Power, Craft & Control",
+        title: "What kind of power or relief sounds most comforting right now?",
+        options: [
+          { label: "Creating something tangible with my own hands and mind", tag: "craft", weights: { Artificer: 4, Wizard: 1, Druid: 1 } },
+          { label: "Understanding the hidden rules so nothing catches me off guard", tag: "analysis", weights: { Wizard: 3, Rogue: 2, Artificer: 2, Warlock: 1 } },
+          { label: "Unshakable inner calm and control over my own body and mind", tag: "stillness", weights: { Monk: 4, Fighter: 2, Druid: 1 } },
+          { label: "Total freedom to shed expectations and follow my instincts", tag: "freedom", weights: { Barbarian: 3, Sorcerer: 3, Ranger: 2 } },
+          { label: "Feeling connected to a higher purpose, oath, or cosmic bargain", tag: "duty", weights: { Paladin: 3, Cleric: 3, Warlock: 3 } }
+        ]
+      },
+      {
+        pillar: "Pillar 4: Power, Craft & Control",
+        title: "If you had an afternoon with zero obligations, how would you spend it?",
+        options: [
+          { label: "Taking something apart, tinkering, or learning a new system", tag: "craft", weights: { Artificer: 3, Wizard: 3 } },
+          { label: "Training, stretching, practicing a craft, or refining technique", tag: "stillness", weights: { Monk: 3, Fighter: 3, Bard: 1 } },
+          { label: "Walking somewhere quiet away from noise and notifications", tag: "solitude", weights: { Druid: 3, Ranger: 3, Rogue: 1 } },
+          { label: "Making art, music, writing, or having deep conversation", tag: "social", weights: { Bard: 3, Sorcerer: 2, Cleric: 2 } },
+          { label: "Doing something bold, spontaneous, or slightly forbidden", tag: "freedom", weights: { Warlock: 3, Barbarian: 2, Rogue: 2 } }
+        ]
+      },
+      {
+        pillar: "Pillar 4: Power, Craft & Control",
+        title: "How do you feel about structure and rules?",
+        options: [
+          { label: "I love frameworks—once I understand a system, I can upgrade it", tag: "craft", weights: { Artificer: 3, Wizard: 3, Paladin: 1 } },
+          { label: "Personal discipline frees me; external bureaucracy bores me", tag: "stillness", weights: { Monk: 3, Fighter: 2, Ranger: 2 } },
+          { label: "Rules are suggestions—I prefer improvisation and flow", tag: "freedom", weights: { Bard: 3, Rogue: 3, Sorcerer: 2 } },
+          { label: "I follow natural rhythms and lived values over rigid laws", tag: "solitude", weights: { Druid: 3, Cleric: 2, Barbarian: 2 } },
+          { label: "I'll sign any contract if the payoff matches my ambition", tag: "analysis", weights: { Warlock: 3, Rogue: 1, Wizard: 1 } }
+        ]
+      },
+
+      // Pillar 5: Rest, Solitude & Recovery (Q13-Q15)
+      {
+        pillar: "Pillar 5: Rest & Recovery",
+        title: "How do you recover when you hit a mental or emotional wall?",
+        options: [
+          { label: "Tinkering, organizing, or solving a small concrete puzzle", tag: "craft", weights: { Artificer: 3, Wizard: 3, Rogue: 1 } },
+          { label: "Moving my body—training, walking, or physical release", tag: "kinetic", weights: { Monk: 3, Fighter: 3, Barbarian: 2, Ranger: 2 } },
+          { label: "Stepping outside into fresh air, nature, or stillness", tag: "solitude", weights: { Druid: 3, Ranger: 3, Monk: 2 } },
+          { label: "Venting, creating art, or talking it out with someone", tag: "social", weights: { Bard: 3, Sorcerer: 2, Cleric: 2 } },
+          { label: "Retreating inward to protect my boundaries and regroup", tag: "solitude", weights: { Warlock: 3, Rogue: 2, Wizard: 1 } }
+        ]
+      },
+      {
+        pillar: "Pillar 5: Rest & Recovery",
+        title: "When you're overwhelmed, what kind of environment soothes you?",
+        options: [
+          { label: "A tidy workshop, desk, or studio stocked with my favorite tools", tag: "craft", weights: { Artificer: 3, Wizard: 3 } },
+          { label: "A quiet forest, coastline, or open sky far from crowds", tag: "solitude", weights: { Druid: 3, Ranger: 3 } },
+          { label: "A calm, minimalist space where I can breathe and center myself", tag: "stillness", weights: { Monk: 3, Cleric: 2, Paladin: 1 } },
+          { label: "A lively room full of warmth, laughter, and familiar faces", tag: "social", weights: { Bard: 3, Fighter: 2, Paladin: 2 } },
+          { label: "A dimly lit corner booth where I can watch without being bothered", tag: "analysis", weights: { Rogue: 3, Warlock: 3 } }
+        ]
+      },
+      {
+        pillar: "Pillar 5: Rest & Recovery",
+        title: "What does emotional safety feel like to you?",
+        options: [
+          { label: "Knowing I have a backup plan for every possible scenario", tag: "analysis", weights: { Wizard: 3, Artificer: 3, Rogue: 1 } },
+          { label: "Knowing I can rely completely on my own strength and composure", tag: "stillness", weights: { Monk: 3, Fighter: 3, Ranger: 2 } },
+          { label: "Being accepted at full volume—messy feelings and all", tag: "freedom", weights: { Sorcerer: 3, Barbarian: 3, Bard: 2 } },
+          { label: "Being part of a circle where everyone has each other's back", tag: "care", weights: { Cleric: 3, Paladin: 3, Fighter: 1 } },
+          { label: "Having total autonomy and zero strings attached", tag: "solitude", weights: { Rogue: 2, Warlock: 3, Druid: 2 } }
+        ]
+      },
+
+      // Pillar 6: Core Growth Arc (Q16-Q18)
+      {
+        pillar: "Pillar 6: Core Growth Arc",
+        title: "What do you want your character to echo or heal right now?",
+        options: [
+          { label: "Turning chaos or stress into useful, clever inventions", tag: "craft", weights: { Artificer: 4, Wizard: 2 } },
+          { label: "Being the unbreakable shield for the people I care about", tag: "duty", weights: { Paladin: 3, Fighter: 3, Cleric: 2, Barbarian: 1 } },
+          { label: "Reclaiming my own voice, authenticity, and untamed power", tag: "freedom", weights: { Sorcerer: 3, Bard: 3, Warlock: 2, Barbarian: 2 } },
+          { label: "Finding peace, clarity, and self-mastery amid noise", tag: "stillness", weights: { Monk: 3, Druid: 3, Ranger: 2 } },
+          { label: "Outsmarting impossible odds on my own terms", tag: "analysis", weights: { Rogue: 3, Warlock: 2, Ranger: 2 } }
+        ]
+      },
+      {
+        pillar: "Pillar 6: Core Growth Arc",
+        title: "Which hero's flaw feels most relatable to you lately?",
+        options: [
+          { label: "Overthinking everything instead of letting myself just feel", tag: "analysis", weights: { Wizard: 3, Artificer: 3, Monk: 1 } },
+          { label: "Carrying everyone else's weight until I'm exhausted", tag: "care", weights: { Paladin: 3, Cleric: 3, Fighter: 2 } },
+          { label: "Holding everything inside until it threatens to erupt", tag: "kinetic", weights: { Barbarian: 3, Sorcerer: 3, Warlock: 1 } },
+          { label: "Keeping people at arm's length so I never get blindsided", tag: "solitude", weights: { Rogue: 3, Ranger: 3, Druid: 1 } },
+          { label: "Saying yes to every spark and spreading myself too thin", tag: "social", weights: { Bard: 3, Sorcerer: 2, Artificer: 1 } }
+        ]
+      },
+      {
+        pillar: "Pillar 6: Core Growth Arc",
+        title: "If your next chapter had a motto, what would it be?",
+        options: [
+          { label: "Make something remarkable out of the pieces you have.", tag: "craft", weights: { Artificer: 4, Bard: 2, Rogue: 1 } },
+          { label: "Still mind, steady breath, unstoppable motion.", tag: "stillness", weights: { Monk: 4, Fighter: 2, Ranger: 1 } },
+          { label: "Stand fast, keep your word, protect what matters.", tag: "duty", weights: { Paladin: 3, Cleric: 3, Fighter: 2 } },
+          { label: "No cages, no apologies, pure instinct.", tag: "freedom", weights: { Barbarian: 3, Sorcerer: 3, Druid: 2 } },
+          { label: "Knowledge is leverage—and I intend to master the game.", tag: "analysis", weights: { Wizard: 3, Warlock: 3, Rogue: 2 } }
+        ]
+      }
+    ];
+
+    let currentIndex = 0;
+    const answers = new Array(QUESTIONS.length).fill(null);
+
+    const quizView = document.getElementById("quiz-view");
+    const resultsView = document.getElementById("results-view");
+    const pillarLabel = document.getElementById("pillar-label");
+    const stepLabel = document.getElementById("step-label");
+    const progressFill = document.getElementById("progress-fill");
+    const dotsRow = document.getElementById("dots-row");
+    const questionTitle = document.getElementById("question-title");
+    const optionsList = document.getElementById("options-list");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    function renderDots() {
+      dotsRow.innerHTML = "";
+      QUESTIONS.forEach((_, idx) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "dot";
+        dot.title = `Question ${idx + 1}`;
+        dot.setAttribute("aria-label", `Go to question ${idx + 1}`);
+        if (answers[idx] !== null) dot.classList.add("answered");
+        if (idx === currentIndex) dot.classList.add("active");
+        dot.addEventListener("click", () => {
+          currentIndex = idx;
+          renderQuestion();
+        });
+        dotsRow.appendChild(dot);
+      });
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[currentIndex];
+      pillarLabel.textContent = q.pillar;
+      stepLabel.textContent = `Question ${currentIndex + 1} of ${QUESTIONS.length}`;
+      progressFill.style.width = `${((currentIndex + 1) / QUESTIONS.length) * 100}%`;
+      questionTitle.textContent = q.title;
+
+      renderDots();
+
+      optionsList.innerHTML = "";
+      q.options.forEach((opt, optIdx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "option-btn";
+        if (answers[currentIndex] === optIdx) {
+          btn.classList.add("selected");
+        }
+        btn.innerHTML = `
+          <span class="option-radio"></span>
+          <span>${opt.label}</span>
+        `;
+        btn.addEventListener("click", () => {
+          answers[currentIndex] = optIdx;
+          renderQuestion();
+        });
+        optionsList.appendChild(btn);
+      });
+
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = answers[currentIndex] === null;
+      nextBtn.textContent = currentIndex === QUESTIONS.length - 1 ? "Reveal My Class" : "Next Question";
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (answers[currentIndex] === null) return;
+      if (currentIndex < QUESTIONS.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    function showResults() {
+      const scores = {};
+      Object.keys(CLASSES).forEach(cls => { scores[cls] = 0; });
+      const tagCounts = {};
+
+      answers.forEach((optIdx, qIdx) => {
+        if (optIdx === null) return;
+        const chosen = QUESTIONS[qIdx].options[optIdx];
+        tagCounts[chosen.tag] = (tagCounts[chosen.tag] || 0) + 1;
+        Object.entries(chosen.weights).forEach(([cls, pts]) => {
+          scores[cls] += pts;
+        });
+      });
+
+      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      const [winnerKey, winnerScore] = ranked[0];
+      const winner = CLASSES[winnerKey];
+
+      const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+      let matchedSub = winner.subclasses.default;
+      for (const [tag] of sortedTags) {
+        if (winner.subclasses[tag]) {
+          matchedSub = winner.subclasses[tag];
+          break;
+        }
+      }
+
+      document.getElementById("res-class").textContent = winner.name;
+      document.getElementById("res-tagline").textContent = winner.tagline;
+      document.getElementById("res-core").textContent = winner.emotionalCore;
+      document.getElementById("res-subclass-name").textContent = matchedSub.name;
+      document.getElementById("res-subclass-desc").textContent = matchedSub.desc;
+      document.getElementById("res-playstyle").textContent = winner.playstyle;
+
+      const runnersGrid = document.getElementById("runners-grid");
+      runnersGrid.innerHTML = "";
+      [1, 2].forEach(rankIdx => {
+        const [rKey] = ranked[rankIdx];
+        const rObj = CLASSES[rKey];
+        const card = document.createElement("div");
+        card.className = "runner-card";
+        card.innerHTML = `
+          <div class="runner-rank">#${rankIdx + 1} Runner-Up</div>
+          <div class="runner-name">${rObj.name}</div>
+          <div class="runner-desc">${rObj.tagline}</div>
+        `;
+        runnersGrid.appendChild(card);
+      });
+
+      const barsContainer = document.getElementById("bars-container");
+      barsContainer.innerHTML = "";
+      const topScore = Math.max(winnerScore, 1);
+      ranked.slice(0, 5).forEach(([clsKey, pts]) => {
+        const pct = Math.round((pts / topScore) * 100);
+        const row = document.createElement("div");
+        row.className = "bar-row";
+        row.innerHTML = `
+          <div class="bar-meta">
+            <span>${clsKey}</span>
+            <span>${pts} pts (${pct}%)</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: ${pct}%;"></div>
+          </div>
+        `;
+        barsContainer.appendChild(row);
+      });
+
+      const copyBtn = document.getElementById("copy-btn");
+      const copyToast = document.getElementById("copy-toast");
+      copyBtn.onclick = () => {
+        const summary = `My D&D Emotional Class Finder Result: ${winner.name} (${matchedSub.name}) — "${winner.tagline}" | Runners-up: ${ranked[1][0]}, ${ranked[2][0]}`;
+        navigator.clipboard.writeText(summary).then(() => {
+          copyToast.textContent = "Result copied to clipboard!";
+          setTimeout(() => { copyToast.textContent = ""; }, 2600);
+        });
+      };
+
+      quizView.classList.add("hidden");
+      resultsView.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("retake-btn").addEventListener("click", () => {
+      answers.fill(null);
+      currentIndex = 0;
+      resultsView.classList.add("hidden");
+      quizView.classList.remove("hidden");
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>
